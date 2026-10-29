@@ -9,7 +9,7 @@
 | Goal | Status |
 | --- | --- |
 | Standalone schema-driven builder | Done (0.1 Alpha) |
-| Brand as AWED / GitHub Ben408/AWED | In progress |
+| Brand as AWED / GitHub Ben408/AWED | Done (private repo) |
 | Admin interstitial → Open AWED | Done |
 | Article + page CRUD, scrapboard, site map, link check | Done |
 | Deploy + Git-backed BC.com edits | Owner tasks in GO_LIVE.md |
