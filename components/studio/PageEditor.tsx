@@ -16,15 +16,16 @@ import {
   removeFromScrapboard,
   type ScrapItem
 } from '@/lib/catalog/scrapboard';
+import { PageLivePreview } from '@/components/studio/PageLivePreview';
 import type { PageDocument } from '@/lib/schema/page';
-import { summarizePage } from '@/lib/render/page-preview';
 
 type PageEditorProps = {
   initial: PageDocument;
   isNew?: boolean;
+  previewBaseUrl?: string;
 };
 
-export function PageEditor({ initial, isNew }: PageEditorProps) {
+export function PageEditor({ initial, isNew, previewBaseUrl }: PageEditorProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [page, setPage] = useState(initial);
@@ -42,8 +43,6 @@ export function PageEditor({ initial, isNew }: PageEditorProps) {
     () => page.blocks.find((b) => b.id === selectedId) ?? null,
     [page.blocks, selectedId]
   );
-  const summary = summarizePage(page);
-
   function updateBlock(id: string, props: BlockInstance['props']) {
     setPage((prev) => ({
       ...prev,
@@ -325,16 +324,7 @@ export function PageEditor({ initial, isNew }: PageEditorProps) {
       ) : null}
 
       {mode === 'preview' ? (
-        <div className="rounded-xl border border-ink-200 bg-white p-6">
-          <p className="text-xs uppercase tracking-wide text-ink-700/70">Preview outline</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold">{summary.title}</h2>
-          <p className="mt-2 text-sm text-ink-700">{summary.tldr}</p>
-          <ol className="mt-6 list-decimal space-y-2 pl-5 text-sm text-ink-800">
-            {summary.outline.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ol>
-        </div>
+        <PageLivePreview page={page} previewBaseUrl={previewBaseUrl} />
       ) : null}
 
       {mode === 'document' ? (

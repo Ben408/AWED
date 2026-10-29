@@ -15,7 +15,9 @@ export const projectEntrySchema = z.object({
       contentRoot: z.string().default('')
     })
     .optional(),
-  publicUrl: z.string().optional()
+  publicUrl: z.string().optional(),
+  /** Local or deployed origin used for live iframe Preview (e.g. http://localhost:3001). */
+  previewBaseUrl: z.string().optional()
 });
 
 export const projectsFileSchema = z.object({

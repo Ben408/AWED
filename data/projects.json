@@ -7,14 +7,16 @@
       "name": "Demo Agent-First Site",
       "rootPath": "fixtures/demo-site",
       "kind": "local",
-      "publicUrl": "http://localhost:3000"
+      "publicUrl": "http://localhost:3000",
+      "previewBaseUrl": "http://localhost:3001"
     },
     {
       "id": "bencornelius",
       "name": "bencornelius.com",
       "rootPath": "C:/Users/bjcor/Desktop/website/website",
       "kind": "local",
-      "publicUrl": "https://www.bencornelius.com"
+      "publicUrl": "https://www.bencornelius.com",
+      "previewBaseUrl": "http://localhost:3001"
     }
   ]
 }
