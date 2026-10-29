@@ -1,0 +1,43 @@
+version: 1
+id: home
+route: /
+template: home
+metadata:
+  title: Demo Communications
+  description: Global communications consulting demo site.
+  listed: true
+  robots: index
+agent:
+  tldr: Demo Communications helps organizations expand globally with clear facts agents can use.
+  facts:
+    - Consulting for global communications
+    - Insights library
+  capabilities:
+    - consult
+blocks:
+  - id: hero-1
+    type: hero
+    props:
+      eyebrow: Demo Communications
+      headline: Communicate across markets
+      support: Structured pages for people and the agents acting on their behalf.
+      primaryCtaLabel: Contact us
+      primaryCtaHref: /contact
+      secondaryCtaLabel: Read insights
+      secondaryCtaHref: /insights
+  - id: services-1
+    type: serviceCards
+    props:
+      heading: How we help
+      items:
+        - title: Consulting
+          description: Strategy for global programs.
+        - title: Delivery
+          description: Hands-on implementation support.
+  - id: cta-1
+    type: ctaBand
+    props:
+      heading: Start a conversation
+      body: Tell us what you are trying to accomplish.
+      buttonLabel: Contact
+      buttonHref: /contact

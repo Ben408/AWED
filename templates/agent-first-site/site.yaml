@@ -1,0 +1,27 @@
+version: 1
+name: Agent-First Starter
+brand: Your Brand
+description: Starter site managed by FWP schemas.
+defaultLocale: en
+nav:
+  - label: Home
+    href: /
+    listed: true
+  - label: Insights
+    href: /insights
+    listed: true
+  - label: Contact
+    href: /contact
+    listed: true
+capabilities:
+  - id: contact
+    title: Contact the team
+    description: Humans and agents can reach the organization through the contact form.
+    audience: both
+seo:
+  titleTemplate: "%s | Your Brand"
+  defaultDescription: An agent-ready marketing site.
+agent:
+  summary: Replace this summary with what your organization offers and who it helps.
+  facts:
+    - Replace with concrete, verifiable facts

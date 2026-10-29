@@ -1,0 +1,29 @@
+version: 1
+name: Demo Agent-First Site
+brand: Demo Communications
+domain: demo.example.com
+description: Fixture site project for FWP tests and local studio work.
+defaultLocale: en
+nav:
+  - label: Home
+    href: /
+    listed: true
+  - label: Insights
+    href: /insights
+    listed: true
+  - label: Contact
+    href: /contact
+    listed: true
+capabilities:
+  - id: consult
+    title: Strategy consulting
+    description: Advise on global communications programs.
+    audience: both
+seo:
+  titleTemplate: "%s | Demo Communications"
+  defaultDescription: Demo site managed by FWP.
+agent:
+  summary: Demo Communications helps organizations communicate across markets and with agents acting on people's behalf.
+  facts:
+    - Offers strategy consulting
+    - Publishes insights as MDX

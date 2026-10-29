@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "activeProjectId": "demo",
+  "projects": [
+    {
+      "id": "demo",
+      "name": "Demo Agent-First Site",
+      "rootPath": "fixtures/demo-site",
+      "kind": "local",
+      "publicUrl": "http://localhost:3000"
+    },
+    {
+      "id": "bencornelius",
+      "name": "bencornelius.com",
+      "rootPath": "C:/Users/bjcor/Desktop/website/website",
+      "kind": "local",
+      "publicUrl": "https://www.bencornelius.com"
+    }
+  ]
+}

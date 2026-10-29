@@ -1,0 +1,38 @@
+version: 1
+id: home
+route: /
+template: home
+metadata:
+  title: Your Brand
+  description: Replace with your value proposition.
+  listed: true
+  robots: index
+agent:
+  tldr: Replace with a one-paragraph machine-usable summary of the organization.
+  facts:
+    - Replace with facts agents can act on
+  capabilities:
+    - contact
+blocks:
+  - id: hero-1
+    type: hero
+    props:
+      eyebrow: Your Brand
+      headline: Put the brand first
+      support: One short supporting sentence for people; agent facts live in metadata.
+      primaryCtaLabel: Contact
+      primaryCtaHref: /contact
+      secondaryCtaLabel: ""
+      secondaryCtaHref: ""
+  - id: prose-1
+    type: prose
+    props:
+      heading: Why this site exists
+      body: Explain the offering in plain language. Keep structure and facts complete for agents.
+  - id: cta-1
+    type: ctaBand
+    props:
+      heading: Talk with us
+      body: ""
+      buttonLabel: Contact
+      buttonHref: /contact

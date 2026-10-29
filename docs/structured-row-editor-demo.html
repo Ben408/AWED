@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FWP — structured row editor vs JSON</title>
+    <style>
+      :root {
+        --ink: #1c2834;
+        --muted: #5b6b7c;
+        --line: #c9d3de;
+        --bg: #f4f6f8;
+        --panel: #fff;
+        --accent: #0f766e;
+        --soft: #ccfbf1;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(ellipse at top, #dbe7ef 0%, var(--bg) 50%);
+        padding: 32px;
+      }
+      h1 { font-size: 1.5rem; margin: 0 0 8px; }
+      .lead { color: var(--muted); max-width: 52rem; margin-bottom: 28px; }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-width: 1100px;
+      }
+      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 0 rgba(0,0,0,.04);
+      }
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .badge.good { color: var(--accent); }
+      h2 { font-size: 1.05rem; margin: 0 0 12px; }
+      textarea, input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font: inherit;
+      }
+      textarea {
+        min-height: 220px;
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 12px;
+        background: #0b1016;
+        color: #e8eef4;
+      }
+      .note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+      .row {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+        background: #fafbfc;
+      }
+      .row-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .fields { display: grid; gap: 8px; }
+      label span { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+      .actions { display: flex; gap: 8px; margin-top: 8px; }
+      button {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      button.danger { color: #9f1239; border-color: #fecdd3; background: #fff1f2; }
+      .inspector-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .selected {
+        outline: 2px solid var(--accent);
+        background: var(--soft);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Structured row editor vs JSON textarea</h1>
+    <p class="lead">
+      Same FAQ block data. Left is what FWP v1 does today (raw JSON). Right is a
+      <strong>structured row editor</strong>: each list item is a labeled card with fields,
+      plus Add / Remove — no braces or commas for the author.
+    </p>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="badge">Current (v1)</div>
+        <h2>Inspector · FAQ items as JSON</h2>
+        <div class="inspector-title">Block · faq</div>
+        <label>
+          <span style="display:block;font-size:12px;font-weight:600;margin-bottom:4px">Items (JSON)</span>
+          <textarea readonly>[
+  {
+    "question": "Do you work with Fortune 500 teams?",
+    "answer": "Yes — strategy and delivery across global programs."
+  },
+  {
+    "question": "Can agents use this page?",
+    "answer": "Yes. Facts and TL;DR live in structured metadata."
+  }
+]</textarea>
+        </label>
+        <p class="note">Authors must keep valid JSON. Easy to break with a missing quote.</p>
+      </section>
+
+      <section class="panel selected">
+        <div class="badge good">Proposed</div>
+        <h2>Inspector · structured rows</h2>
+        <div class="inspector-title">Block · faq</div>
+
+        <div class="row">
+          <div class="row-head">
+            <span>Item 1</span>
+            <button class="danger" type="button">Remove</button>
+          </div>
+          <div class="fields">
+            <label>
+              <span>Question</span>
+              <input value="Do you work with Fortune 500 teams?" />
+            </label>
+            <label>
+              <span>Answer</span>
+              <input value="Yes — strategy and delivery across global programs." />
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-head">
+            <span>Item 2</span>
+            <button class="danger" type="button">Remove</button>
+          </div>
+          <div class="fields">
+            <label>
+              <span>Question</span>
+              <input value="Can agents use this page?" />
+            </label>
+            <label>
+              <span>Answer</span>
+              <input value="Yes. Facts and TL;DR live in structured metadata." />
+            </label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" type="button">Add item</button>
+        </div>
+        <p class="note">Same schema underneath — just a safer form surface for non-developers.</p>
+      </section>
+    </div>
+  </body>
+</html>
