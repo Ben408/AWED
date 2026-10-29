@@ -10,14 +10,19 @@ export async function getActiveStore(): Promise<{
   store: FsSiteStore;
   projectId: string;
   projectName: string;
+  rootPath: string;
 }> {
   const project = await getActiveProject();
   if (!project) {
-    throw new Error('No site project configured. Add one in data/projects.json.');
+    throw new Error(
+      'No site project configured. Use Import existing project or add one in data/projects.json.'
+    );
   }
+  const rootPath = resolveProjectRoot(project.rootPath);
   return {
-    store: new FsSiteStore(resolveProjectRoot(project.rootPath)),
+    store: new FsSiteStore(rootPath),
     projectId: project.id,
-    projectName: project.name
+    projectName: project.name,
+    rootPath
   };
 }

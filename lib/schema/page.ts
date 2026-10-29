@@ -15,6 +15,13 @@ export const pageMetadataSchema = z.object({
   robots: z.enum(['index', 'noindex']).default('index')
 });
 
+export const pageSourceSchema = z.object({
+  kind: z.enum(['document', 'tsx']).default('document'),
+  /** Repo-relative path to the Next.js page module, when imported from an existing site. */
+  path: z.string().optional(),
+  importedAt: z.string().optional()
+});
+
 export const pageDocumentSchema = z.object({
   version: z.literal(1).default(1),
   id: z.string().min(1),
@@ -24,7 +31,8 @@ export const pageDocumentSchema = z.object({
   template: z.string().default('blank'),
   metadata: pageMetadataSchema,
   agent: pageAgentSchema.default({}),
-  blocks: z.array(blockInstanceSchema).default([])
+  blocks: z.array(blockInstanceSchema).default([]),
+  source: pageSourceSchema.optional()
 });
 
 export type PageDocument = z.infer<typeof pageDocumentSchema>;

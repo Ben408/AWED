@@ -2,7 +2,7 @@
 
 **Product:** Agentic Web Experience Designer (AWED)  
 **Version:** 0.1.0-alpha  
-**Last updated:** 2026-10-29
+**Last updated:** 2026-10-29 (import existing project / BC attach)
 
 ## Product goals
 

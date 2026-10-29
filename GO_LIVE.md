@@ -12,15 +12,17 @@ This checklist is what **you** need to finish so AWED can edit the real site in 
 
 ## A. Local Alpha testing (now)
 
-1. Confirm both apps are running (started for this Alpha):
-   - Marketing site: `C:\Users\bjcor\Desktop\website\website` → usually http://localhost:3000
+1. Confirm both apps are running:
+   - Marketing site: `C:\Users\bjcor\Desktop\website\website` → http://localhost:3000 or :3001
    - AWED: `F:\Coding_Projects\FWP` → http://localhost:3100
-2. In AWED, use the project switcher:
-   - **Demo Agent-First Site** — safe sandbox (`fixtures/demo-site`)
-   - **bencornelius.com** — writes into your local website folder
-3. On Demo first: create/edit an article, edit the home page blocks, use Scrapboard, open **Site map** and **Links**.
-4. Switch to **bencornelius.com** only when ready to touch real content. Prefer **drafts** for articles until you are confident.
-5. Capture feedback (UX, missing fields, scary moments) for Alpha notes.
+2. **Attach the real site (once per machine / after clone):**
+   - Open http://localhost:3100/import
+   - Path: `C:/Users/bjcor/Desktop/website/website`
+   - **Scan project** → confirm ~15 pages and ~36 articles
+   - **Import & attach** (overwrite OK on first run)
+3. Project switcher should show **bencornelius.com** as active; Overview lists pages + articles.
+4. Prefer **drafts** for article experiments; page documents map to TSX sources but do not replace runtime TSX until a renderer is wired (see §G).
+5. Capture Alpha feedback.
 
 ---
 

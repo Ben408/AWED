@@ -14,6 +14,7 @@ type StudioShellProps = {
 
 const NAV = [
   { href: '/', label: 'Overview' },
+  { href: '/import', label: 'Import' },
   { href: '/sitemap', label: 'Site map' },
   { href: '/articles', label: 'Articles' },
   { href: '/pages', label: 'Pages' },
