@@ -32,3 +32,10 @@ npm run build
 ```
 
 See GO_LIVE.md for production owner tasks.
+
+## Experience decisions
+
+- Nested list fields use a structured row editor (not JSON textareas).
+- **Import** registers full file paths in `.awed/manifest.yaml` (and thin page path records). It does **not** extract TSX/MDX copy into stub blocks.
+- **Library** manages art under `public/` (upload to `public/images/library/`); place on pages with the **Image** block + library picker.
+- **Preview** shows live human iframe + labeled agent/machine panel.
