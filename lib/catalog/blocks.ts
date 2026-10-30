@@ -4,6 +4,7 @@ import { z } from 'zod';
 export const blockTypeSchema = z.enum([
   'hero',
   'prose',
+  'image',
   'serviceCards',
   'ctaBand',
   'faq',
@@ -38,6 +39,15 @@ export const proseBlockSchema = baseBlock.extend({
   props: z.object({
     heading: z.string().default(''),
     body: z.string().min(1)
+  })
+});
+
+export const imageBlockSchema = baseBlock.extend({
+  type: z.literal('image'),
+  props: z.object({
+    src: z.string().min(1),
+    alt: z.string().default(''),
+    caption: z.string().default('')
   })
 });
 
@@ -133,6 +143,7 @@ export const contactFormBlockSchema = baseBlock.extend({
 export const blockInstanceSchema = z.discriminatedUnion('type', [
   heroBlockSchema,
   proseBlockSchema,
+  imageBlockSchema,
   serviceCardsBlockSchema,
   ctaBandBlockSchema,
   faqBlockSchema,
@@ -171,6 +182,12 @@ export const BLOCK_CATALOG: CatalogEntry[] = [
     label: 'Prose',
     description: 'Heading plus body copy',
     defaults: { heading: '', body: 'Write the section copy here.' }
+  },
+  {
+    type: 'image',
+    label: 'Image',
+    description: 'Art from the media library (public URL path)',
+    defaults: { src: '/images/placeholder.png', alt: '', caption: '' }
   },
   {
     type: 'serviceCards',

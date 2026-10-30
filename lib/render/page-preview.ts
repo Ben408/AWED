@@ -22,6 +22,8 @@ function outlineBlock(block: BlockInstance): string {
       return `Hero: ${block.props.headline}`;
     case 'prose':
       return `Prose: ${block.props.heading || block.props.body.slice(0, 40)}`;
+    case 'image':
+      return `Image: ${block.props.src}`;
     case 'serviceCards':
       return `Services: ${block.props.items.length} cards`;
     case 'ctaBand':

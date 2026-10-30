@@ -9,10 +9,11 @@ type ScanSummary = {
   siteName?: string;
   articleCount: number;
   draftCount: number;
-  appPages: { route: string; title: string; sourcePath: string }[];
-  nav: { label: string; href: string }[];
+  mediaCount: number;
+  appPages: { route: string; sourcePath: string; absolutePath?: string }[];
+  files: { path: string; role: string; absolutePath?: string; urlPath?: string }[];
   warnings: string[];
-  hasSiteYaml: boolean;
+  hasManifest: boolean;
 };
 
 const DEFAULT_BC_PATH = 'C:/Users/bjcor/Desktop/website/website';
@@ -41,7 +42,9 @@ export function ImportExistingForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Scan failed');
       setScan(data.scan);
-      setMessage(`Scan OK — ${data.scan.appPages.length} pages, ${data.scan.articleCount} articles.`);
+      setMessage(
+        `Scan OK — ${data.scan.appPages.length} page files, ${data.scan.articleCount} articles, ${data.scan.mediaCount} art files (paths only).`
+      );
       if (data.scan.siteName) setProjectName(data.scan.siteName);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Scan failed');
@@ -63,6 +66,7 @@ export function ImportExistingForm() {
           projectId,
           projectName,
           publicUrl: 'https://www.bencornelius.com',
+          previewBaseUrl: 'http://localhost:3001',
           overwrite,
           dryRun: false
         })
@@ -70,9 +74,9 @@ export function ImportExistingForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Import failed');
       setMessage(
-        `Attached ${data.result.project.name}: wrote ${data.result.pagesWritten} page docs` +
-          (data.result.wroteSiteYaml ? ', site.yaml' : '') +
-          '.'
+        `Attached ${data.result.project.name}: registered ${data.result.scan.files.length} files in .awed/manifest.yaml` +
+          (data.result.wroteSiteYaml ? ', minimal site.yaml' : '') +
+          `, ${data.result.pagesWritten} page path records.`
       );
       router.refresh();
       router.push('/');
@@ -97,12 +101,10 @@ export function ImportExistingForm() {
             className="mt-1 w-full rounded-md border border-ink-200 px-3 py-2 font-mono text-sm"
             value={rootPath}
             onChange={(e) => setRootPath(e.target.value)}
-            placeholder="C:/path/to/next/site"
           />
           <span className="mt-1 block text-xs text-ink-700">
-            Folder that contains <code className="font-mono">app/</code> and{' '}
-            <code className="font-mono">content/</code> (for bencornelius.com: the inner{' '}
-            <code className="font-mono">website</code> directory).
+            Import registers <strong>full file paths</strong> (pages, articles, art). It does not
+            extract page copy into AWED blocks.
           </span>
         </label>
         <label className="text-sm">
@@ -123,7 +125,7 @@ export function ImportExistingForm() {
         </label>
         <label className="flex items-center gap-2 text-sm md:col-span-2">
           <input type="checkbox" checked={overwrite} onChange={(e) => setOverwrite(e.target.checked)} />
-          Overwrite existing <code className="font-mono">site.yaml</code> / page documents
+          Overwrite existing manifest / page path records
         </label>
       </div>
 
@@ -148,29 +150,25 @@ export function ImportExistingForm() {
 
       {scan ? (
         <div className="rounded-xl border border-ink-200 bg-white p-4 text-sm">
-          <h2 className="font-display text-lg font-semibold">Scan preview</h2>
+          <h2 className="font-display text-lg font-semibold">Path registry preview</h2>
           <p className="mt-1 text-ink-700">
             {scan.siteName || 'Unnamed'} · {scan.kind} · {scan.root}
           </p>
           <p className="mt-2">
-            Pages: {scan.appPages.length} · Articles: {scan.articleCount} · Drafts: {scan.draftCount}
-            {scan.hasSiteYaml ? ' · site.yaml already present' : ''}
+            Files: {scan.files.length} · Pages: {scan.appPages.length} · Articles:{' '}
+            {scan.articleCount} · Drafts: {scan.draftCount} · Art: {scan.mediaCount}
           </p>
-          <ul className="mt-3 max-h-64 overflow-auto divide-y divide-ink-100 font-mono text-xs">
-            {scan.appPages.map((page) => (
-              <li key={page.route} className="flex justify-between gap-3 py-1.5">
-                <span>{page.route}</span>
-                <span className="text-ink-700">{page.sourcePath}</span>
+          <ul className="mt-3 max-h-72 overflow-auto divide-y divide-ink-100 font-mono text-xs">
+            {scan.files.slice(0, 80).map((file) => (
+              <li key={`${file.role}-${file.path}`} className="flex justify-between gap-3 py-1.5">
+                <span className="text-ink-700">{file.role}</span>
+                <span className="truncate text-right">{file.path}</span>
               </li>
             ))}
+            {scan.files.length > 80 ? (
+              <li className="py-2 text-ink-700">…and {scan.files.length - 80} more</li>
+            ) : null}
           </ul>
-          {scan.warnings.length ? (
-            <ul className="mt-3 list-disc pl-5 text-amber-900">
-              {scan.warnings.map((w) => (
-                <li key={w}>{w}</li>
-              ))}
-            </ul>
-          ) : null}
         </div>
       ) : null}
     </div>

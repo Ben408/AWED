@@ -362,6 +362,8 @@ function outlineFor(block: BlockInstance): string {
       return block.props.headline;
     case 'prose':
       return block.props.heading || block.props.body.slice(0, 48);
+    case 'image':
+      return block.props.src;
     case 'ctaBand':
       return block.props.heading;
     default:
@@ -387,6 +389,12 @@ function BlockPropsEditor({
       <p className="text-xs font-semibold uppercase tracking-wide text-ink-700/70">
         Block · {block.type}
       </p>
+      {block.type === 'image' ? (
+        <ImageLibraryPicker
+          src={String(props.src ?? '')}
+          onPick={(src) => onChange({ ...props, src } as BlockInstance['props'])}
+        />
+      ) : null}
       {scalarKeys.map((key) => (
         <label key={key} className="block text-sm">
           <span className="font-medium capitalize">{key}</span>
@@ -412,6 +420,44 @@ function BlockPropsEditor({
         />
       ))}
     </div>
+  );
+}
+
+function ImageLibraryPicker({ src, onPick }: { src: string; onPick: (src: string) => void }) {
+  const [items, setItems] = useState<{ urlPath: string; fileName: string }[]>([]);
+
+  useEffect(() => {
+    fetch('/api/media')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data.media)) {
+          setItems(
+            data.media.map((m: { urlPath: string; fileName: string }) => ({
+              urlPath: m.urlPath,
+              fileName: m.fileName
+            }))
+          );
+        }
+      })
+      .catch(() => setItems([]));
+  }, []);
+
+  return (
+    <label className="block text-sm">
+      <span className="font-medium">From Library</span>
+      <select
+        className="mt-1 w-full rounded-md border border-ink-200 px-2 py-1.5"
+        value={src}
+        onChange={(e) => onPick(e.target.value)}
+      >
+        <option value={src || ''}>{src ? `Current: ${src}` : 'Choose art…'}</option>
+        {items.map((item) => (
+          <option key={item.urlPath} value={item.urlPath}>
+            {item.fileName} — {item.urlPath}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 

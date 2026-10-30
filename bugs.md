@@ -12,8 +12,8 @@ _None._
 
 - **Symptoms:** Project switcher listed bencornelius.com, but AWED showed empty/default site state (no `site.yaml`, no page docs); felt disconnected from the real Next.js tree.
 - **Root cause:** Registry only stored a folder path. The live site uses hardcoded `app/**/page.tsx` + MDX articles, not AWED’s document layout, so nothing was mapped.
-- **Fix:** Added **Import existing project** (`/import`): scans App Router + `content/`, writes `site.yaml`, `content/pages/*.page.yaml` (with `source.path` back to TSX), allowlists, and attaches/activates the project in `data/projects.json`.
-- **Regression:** `lib/import/scan-existing-site.test.ts`, `lib/import/import-existing-site.test.ts`.
+- **Fix (revised):** Import registers **full file paths** in `.awed/manifest.yaml` (pages, articles, media) and thin page path records—no content extraction into stub blocks. Media **Library** lists/uploads art under `public/images/library/` for placement via Image blocks.
+- **Regression:** `lib/import/*`, `lib/store/media-store.test.ts`.
 
 ## Fixed
 

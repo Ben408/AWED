@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       projectId: body.projectId,
       projectName: body.projectName,
       publicUrl: body.publicUrl,
+      previewBaseUrl: (body as { previewBaseUrl?: string }).previewBaseUrl,
       overwrite: body.overwrite,
       attach: true
     });

@@ -6,10 +6,18 @@ import {
   serializeArticleMdx,
   type ArticleDocument
 } from '@/lib/schema/article';
+import { parseSiteManifest, type SiteManifest } from '@/lib/schema/manifest';
 import { parsePageDocument, type PageDocument } from '@/lib/schema/page';
 import { parseSiteDocument, type SiteDocument } from '@/lib/schema/site';
 import { resolveSiteLayout, type SiteLayout } from '@/lib/store/paths';
 import { readYamlFile, writeYamlFile } from '@/lib/store/yaml-io';
+
+export type MediaAsset = {
+  path: string;
+  absolutePath: string;
+  urlPath: string;
+  fileName: string;
+};
 
 export type Allowlists = {
   business: string[];
@@ -34,6 +42,66 @@ export class FsSiteStore {
     await fs.mkdir(this.layout.articlesDir, { recursive: true });
     await fs.mkdir(this.layout.draftsDir, { recursive: true });
     await fs.mkdir(this.layout.mediaDir, { recursive: true });
+    await fs.mkdir(path.join(this.layout.mediaDir, 'library'), { recursive: true });
+    await fs.mkdir(path.dirname(this.layout.manifestFile), { recursive: true });
+  }
+
+  async getManifest(): Promise<SiteManifest | null> {
+    const raw = await readYamlFile<unknown>(this.layout.manifestFile);
+    return raw ? parseSiteManifest(raw) : null;
+  }
+
+  async listMedia(): Promise<MediaAsset[]> {
+    const publicRoot = this.layout.publicDir;
+    const siteRoot = this.layout.root;
+    const images: MediaAsset[] = [];
+    const imageExt = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif', '.ico']);
+
+    async function walk(dir: string) {
+      let entries;
+      try {
+        entries = await fs.readdir(dir, { withFileTypes: true });
+      } catch {
+        return;
+      }
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          await walk(full);
+          continue;
+        }
+        const ext = path.extname(entry.name).toLowerCase();
+        if (!imageExt.has(ext)) continue;
+        const relPublic = path.relative(publicRoot, full).replace(/\\/g, '/');
+        const relRoot = path.relative(siteRoot, full).replace(/\\/g, '/');
+        images.push({
+          path: relRoot,
+          absolutePath: full,
+          urlPath: '/' + relPublic,
+          fileName: entry.name
+        });
+      }
+    }
+
+    await walk(publicRoot);
+    return images.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+  }
+
+  async saveMediaFile(fileName: string, bytes: Buffer): Promise<MediaAsset> {
+    const safe = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    if (!safe) throw new Error('Invalid file name');
+    const destDir = path.join(this.layout.mediaDir, 'library');
+    await fs.mkdir(destDir, { recursive: true });
+    const dest = path.join(destDir, safe);
+    await fs.writeFile(dest, bytes);
+    const relRoot = path.relative(this.layout.root, dest).replace(/\\/g, '/');
+    const relPublic = path.relative(this.layout.publicDir, dest).replace(/\\/g, '/');
+    return {
+      path: relRoot,
+      absolutePath: dest,
+      urlPath: '/' + relPublic,
+      fileName: safe
+    };
   }
 
   async getSite(): Promise<SiteDocument> {
