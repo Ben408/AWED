@@ -1,10 +1,12 @@
 # AWED — Agentic Web Experience Designer
 
-**Version:** 0.1.0-alpha
+**Version:** 0.2.0-pre-beta
 
-Schema-driven studio for agent-first Next.js sites. Inspired by the *ease* of classic visual page tools (Edit / Preview, inspector, scrapboard, site map, link check, publish)—without treating HTML as the source of truth, and without copying Adobe PageMill’s UI.
+This type of web app does not use 'web 2.0' technologies. There is no HTML, PHP, etc. This is a website builder for the Agentic web.
 
-Repo: https://github.com/Ben408/AWED
+Schema-driven studio for agent-first Next.js sites. Inspired by the *ease* of classic visual page tools (Edit / Preview, inspector, scrapboard, site map, link check, publish)—without treating HTML as the source of truth, but implemented to be agent focused and work with .js, .tsx, and .mdx files.
+
+<img width="898" height="748" alt="image" src="https://github.com/user-attachments/assets/cfc421b6-c734-4d04-872d-95548ed54303" />
 
 ## Quick start
 
@@ -15,13 +17,3 @@ npm run dev
 ```
 
 Open http://localhost:3100
-
-## Docs
-
-- [`GO_LIVE.md`](./GO_LIVE.md) — **your** checklist to put AWED in production for bencornelius.com
-- [`status.md`](./status.md) — goals and progress
-- [`bugs.md`](./bugs.md) — defects and fixes
-
-## Local Alpha
-
-Use the project switcher: Demo fixture first, then the local bencornelius.com path when ready.
