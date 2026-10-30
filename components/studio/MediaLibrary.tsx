@@ -79,7 +79,14 @@ export function MediaLibrary({
           return (
             <li
               key={item.path}
-              className="overflow-hidden rounded-xl border border-ink-200 bg-white"
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData('application/x-awed-media', item.urlPath);
+                e.dataTransfer.setData('text/plain', item.urlPath);
+                e.dataTransfer.effectAllowed = 'copy';
+              }}
+              title="Drag onto an article body or cover image zone"
+              className="cursor-grab overflow-hidden rounded-xl border border-ink-200 bg-white active:cursor-grabbing"
             >
               <div className="flex h-36 items-center justify-center bg-ink-50">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -1,14 +1,14 @@
 # AWED Status
 
 **Product:** Agentic Web Experience Designer (AWED)  
-**Version:** 0.1.0-alpha  
-**Last updated:** 2026-10-29 (path-only import + media Library)
+**Version:** 0.2.0-pre-beta  
+**Last updated:** 2026-10-30 (0.2 pre-beta release)
 
 ## Product goals
 
 | Goal | Status |
 | --- | --- |
-| Standalone schema-driven builder | Done (0.1 Alpha) |
+| Standalone schema-driven builder | Done (0.2 Pre-Beta) |
 | Brand as AWED / GitHub Ben408/AWED | Done (private repo) |
 | Admin interstitial → Open AWED | Done |
 | Article + page CRUD, scrapboard, site map, link check | Done |
@@ -39,3 +39,11 @@ See GO_LIVE.md for production owner tasks.
 - **Import** registers full file paths in `.awed/manifest.yaml` (and thin page path records). It does **not** extract TSX/MDX copy into stub blocks.
 - **Library** manages art under `public/` (upload to `public/images/library/`); place on pages with the **Image** block + library picker.
 - **Preview** shows live human iframe + labeled agent/machine panel.
+- **Articles** list supports publish / unpublish / delete / reorder (date swap). Insights & Backyard order edit `content/allowlists.yaml`. Orphan draft+published duplicates are reconciled.
+- **Interactive demos** in articles = MDX tags (e.g. `<GenerativeUiDemo />`) registered in the site’s `mdx-components.tsx`; AWED can insert known tags, not invent new demos.
+- **Site map navigation** is editable (add / rename / reorder / relink / remove) and syncs to `site.yaml` + live `lib/constants.ts` nav when present.
+- **Create wizards** scaffold real `app/.../page.tsx` and draft MDX; duplicate/delete (optional TSX) available.
+- **Articles** support bulk publish/unpublish/delete, DnD reorder, cover picker, embed catalog, split preview, autosave drafts, undo.
+- **TSX page editor** has outline, featured/metrics/CTA regions, diff-before-save, undo, image drop, preview click-to-edit bridge.
+- **Footer link groups** editable from Site map; live footer reads `footerNavGroups`.
+- Deferred items live in [`backlog.md`](./backlog.md).

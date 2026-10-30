@@ -1,25 +1,11 @@
-import { ArticleEditor } from '@/components/studio/ArticleEditor';
+import { CreateArticleWizard } from '@/components/studio/CreateArticleWizard';
 
 export default function NewArticlePage() {
-  const today = new Date().toISOString().slice(0, 10);
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-3xl font-semibold">New article</h1>
-      <ArticleEditor
-        isNew
-        initial={{
-          slug: 'new-article',
-          location: 'drafts',
-          frontmatter: {
-            title: 'Untitled article',
-            date: today,
-            summary: '',
-            status: 'draft',
-            listed: true
-          },
-          body: '# Untitled article\n\n## TL;DR\n\n\n'
-        }}
-      />
+      <h1 className="font-display text-3xl font-semibold">Create article</h1>
+      <p className="text-sm text-ink-700">Starts a draft MDX post under content/drafts.</p>
+      <CreateArticleWizard />
     </div>
   );
 }

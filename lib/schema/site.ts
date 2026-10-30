@@ -6,6 +6,11 @@ export const navItemSchema = z.object({
   listed: z.boolean().default(true)
 });
 
+export const footerGroupSchema = z.object({
+  title: z.string().min(1),
+  links: z.array(navItemSchema).default([])
+});
+
 export const capabilitySchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
@@ -21,6 +26,7 @@ export const siteDocumentSchema = z.object({
   description: z.string().default(''),
   defaultLocale: z.string().default('en'),
   nav: z.array(navItemSchema).default([]),
+  footerGroups: z.array(footerGroupSchema).default([]),
   capabilities: z.array(capabilitySchema).default([]),
   seo: z
     .object({
@@ -38,6 +44,7 @@ export const siteDocumentSchema = z.object({
 
 export type SiteDocument = z.infer<typeof siteDocumentSchema>;
 export type NavItem = z.infer<typeof navItemSchema>;
+export type FooterGroup = z.infer<typeof footerGroupSchema>;
 export type Capability = z.infer<typeof capabilitySchema>;
 
 export function parseSiteDocument(input: unknown): SiteDocument {

@@ -11,3 +11,5 @@ _toc.txt
 npm-install.log
 fixtures/demo-site/.fwp-publish.json
 **/.fwp-publish.json
+*.tsbuildinfo
+tsconfig.tmp*.json

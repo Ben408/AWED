@@ -14,13 +14,22 @@ type AgentSurface = {
 type PageLivePreviewProps = {
   page: PageDocument;
   previewBaseUrl?: string;
+  /** Human-facing regions that can be jumped to in the editor. */
+  editTargets?: { id: string; label: string }[];
+  /** Called when a target is clicked; parent should switch to edit mode and focus it. */
+  onEditTarget?: (id: string) => void;
 };
 
 /**
  * Human view = live site iframe (real TSX render).
  * Agent view = labeled machine surfaces from page doc + JSON-LD scraped from that HTML.
  */
-export function PageLivePreview({ page, previewBaseUrl }: PageLivePreviewProps) {
+export function PageLivePreview({
+  page,
+  previewBaseUrl,
+  editTargets,
+  onEditTarget
+}: PageLivePreviewProps) {
   const liveUrl = useMemo(() => {
     if (!previewBaseUrl) return null;
     const base = previewBaseUrl.replace(/\/$/, '');
@@ -56,8 +65,8 @@ export function PageLivePreview({ page, previewBaseUrl }: PageLivePreviewProps) 
     <div className="space-y-4">
       <p className="text-sm text-ink-700">
         Preview shows the <strong>live site render</strong> (human HTML) plus a marked{' '}
-        <strong>agent / machine</strong> panel. Edit mode still uses AWED page documents—which for
-        imported TSX pages are metadata + stubs until content is migrated into blocks.
+        <strong>agent / machine</strong> panel. Edit mode writes back into the existing page file on
+        disk — no refactor required.
       </p>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.8fr)]">
@@ -94,6 +103,29 @@ export function PageLivePreview({ page, previewBaseUrl }: PageLivePreviewProps) 
               <code className="font-mono">http://localhost:3001</code>).
             </div>
           )}
+          {editTargets?.length && onEditTarget ? (
+            <div className="border-t border-sky-200 bg-sky-50/60 px-3 py-2">
+              <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-sky-900">
+                Clickable outline — jump to edit
+              </p>
+              <p className="mb-2 text-xs text-sky-900/80">
+                The preview is a separate site, so click a section below to edit it.
+              </p>
+              <ul className="flex flex-wrap gap-1.5">
+                {editTargets.map((t) => (
+                  <li key={t.id}>
+                    <button
+                      type="button"
+                      onClick={() => onEditTarget(t.id)}
+                      className="rounded-full border border-sky-300 bg-white px-2.5 py-1 text-xs font-medium text-sky-950 hover:bg-sky-100"
+                    >
+                      ✎ {t.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </section>
 
         <section className="overflow-hidden rounded-xl border-2 border-violet-700 bg-white">

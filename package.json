@@ -1,8 +1,8 @@
 {
   "name": "awed",
-  "version": "0.1.0-alpha",
+  "version": "0.2.0-pre-beta",
   "private": true,
-  "description": "AWED — Agentic Web Experience Designer (0.1 Alpha)",
+  "description": "AWED — Agentic Web Experience Designer (0.2 Pre-Beta)",
   "scripts": {
     "dev": "next dev -p 3100",
     "build": "next build",
@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "check:pages": "tsx scripts/check-page-editability.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

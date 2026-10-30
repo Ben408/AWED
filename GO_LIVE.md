@@ -18,10 +18,10 @@ This checklist is what **you** need to finish so AWED can edit the real site in 
 2. **Attach the real site (once per machine / after clone):**
    - Open http://localhost:3100/import
    - Path: `C:/Users/bjcor/Desktop/website/website`
-   - **Scan project** → confirm ~15 pages and ~36 articles
-   - **Import & attach** (overwrite OK on first run)
-3. Project switcher should show **bencornelius.com** as active; Overview lists pages + articles.
-4. Prefer **drafts** for article experiments; page documents map to TSX sources but do not replace runtime TSX until a renderer is wired (see §G).
+   - **Scan project** → confirm page/article/media **paths**
+   - **Import & attach** (writes `.awed/manifest.yaml` path index only)
+3. Project switcher → **bencornelius.com**. Open Pages → About / Resources / Services: Edit saves into the real `app/**/page.tsx`.
+4. `.awed/manifest.yaml` is **not** updated by normal editing — see [`docs/MANIFEST.md`](./docs/MANIFEST.md).
 5. Capture Alpha feedback.
 
 ---
@@ -95,11 +95,9 @@ Deploy website so `/admin` **Open AWED** hits the right host.
 
 ## G. Content model on bencornelius.com
 
-1. **Articles (ready for Alpha):** AWED can edit `content/drafts` and `content/articles` MDX when pointed at the local site root.
-2. **Marketing pages:** still mostly hardcoded TSX. To manage them in AWED long-term:
-   - Add `content/pages/*.page.yaml` under the site, **and**
-   - Teach the Next app to render those documents (starter renderer lives in `templates/agent-first-site`).
-3. Migrate **one** simple page first (e.g. Resources) before converting Home/Services.
+1. **Articles:** edit real MDX under `content/articles` and `content/drafts`.
+2. **Marketing pages:** edit the **existing** `app/**/page.tsx` files in place (extract → form → write back). No requirement to rebuild pages for AWED.
+3. **Optional later:** document-driven pages for *new* sites (`templates/agent-first-site`). Not required for BC.com.
 
 ---
 

@@ -34,6 +34,7 @@ export function PageEditor({ initial, isNew, previewBaseUrl }: PageEditorProps) 
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [scrap, setScrap] = useState<ScrapItem[]>([]);
+  const [dragBlockId, setDragBlockId] = useState<string | null>(null);
 
   useEffect(() => {
     setScrap(loadScrapboard());
@@ -222,8 +223,24 @@ export function PageEditor({ initial, isNew, previewBaseUrl }: PageEditorProps) 
                 <button
                   key={block.id}
                   type="button"
+                  draggable
+                  onDragStart={() => setDragBlockId(block.id)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => {
+                    if (!dragBlockId || dragBlockId === block.id) return;
+                    setPage((prev) => {
+                      const from = prev.blocks.findIndex((b) => b.id === dragBlockId);
+                      const to = prev.blocks.findIndex((b) => b.id === block.id);
+                      if (from < 0 || to < 0) return prev;
+                      const blocks = [...prev.blocks];
+                      const [item] = blocks.splice(from, 1);
+                      blocks.splice(to, 0, item);
+                      return { ...prev, blocks };
+                    });
+                    setDragBlockId(null);
+                  }}
                   onClick={() => setSelectedId(block.id)}
-                  className={`w-full rounded-lg border px-3 py-3 text-left text-sm ${
+                  className={`w-full cursor-grab rounded-lg border px-3 py-3 text-left text-sm active:cursor-grabbing ${
                     selectedId === block.id
                       ? 'border-accent bg-accent-soft'
                       : 'border-ink-200 bg-ink-50'
@@ -231,6 +248,9 @@ export function PageEditor({ initial, isNew, previewBaseUrl }: PageEditorProps) 
                 >
                   <span className="font-semibold capitalize">{block.type}</span>
                   <span className="mt-1 block text-ink-700">{outlineFor(block)}</span>
+                  <span className="mt-1 block text-[10px] uppercase tracking-wide text-ink-700/70">
+                    Drag to reorder
+                  </span>
                 </button>
               ))}
               {!page.blocks.length ? (
